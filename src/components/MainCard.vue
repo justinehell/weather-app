@@ -4,38 +4,25 @@
     <section v-if="currentWeatherData">
       <h2>{{ currentWeatherData.name }}</h2>
       <p>
-        {{ getCurrentDayString(currentWeatherData.dt, "long") }}
-        {{ getCurrentHour(currentWeatherData.dt) }}
+        {{ getDayString(currentWeatherData.dt, "long") }}
+        {{ getHour(currentWeatherData.dt) }}
       </p>
       <p v-for="el in currentWeatherData.weather" :key="el.id">
         {{ el.description }}
-        <img alt="current day weather" :src="getIconUrl(el.icon)" />
+        <BaseWeatherIcon :icon="el.icon" />
       </p>
 
       <p>{{ Math.ceil(currentWeatherData.main.temp) }} °C</p>
       <p>Humidité : {{ currentWeatherData.main.humidity }}%</p>
       <p>Vent : {{ currentWeatherData.wind.speed }} m/s</p>
-
-      <div>
-        <p>{{ getCurrentDayString(currentWeatherData.dt, "short") }}</p>
-        <img
-          v-for="(el, index) in currentWeatherData.weather"
-          :key="index"
-          :src="getIconUrl(el.icon)"
-          alt="current day weather"
-        />
-        <div>
-          <span>{{ Math.ceil(currentWeatherData.main.temp_max) }} °C</span>
-          /
-          <span>{{ Math.ceil(currentWeatherData.main.temp_min) }}°C</span>
-        </div>
-      </div>
+      <DayThumbnail :dayWeatherData="currentWeatherData" />
     </section>
   </div>
 </template>
 
 <script>
-import WeatherService from "./../services/WeatherService";
+import DayThumbnail from "./DayThumbnail";
+import WeatherService from "../services/WeatherService";
 import mixinFunctions from "../utils/functions";
 
 export default {
@@ -44,11 +31,10 @@ export default {
       currentWeatherData: null,
     };
   },
-  methods: {
-    getIconUrl(icon) {
-      return "http://openweathermap.org/img/w/" + icon + ".png";
-    },
+  components: {
+    DayThumbnail,
   },
+  methods: {},
   created() {
     WeatherService.getWeather()
       .then((response) => {
