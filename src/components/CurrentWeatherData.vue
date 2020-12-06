@@ -1,24 +1,30 @@
 <template>
   <div>
     <div>
-      <h2>{{ currentWeatherData.name }}</h2>
+      <h2 class="font-weight-bold primary--text">
+        {{ currentWeatherData.name }}
+      </h2>
       <!-- v-text : inject the value via innerText -->
-      <p v-text="date"></p>
-      <p v-text="weatherDescription"></p>
+      <div v-text="date" class="secondary--text"></div>
+      <div v-text="weatherDescription" class="secondary--text"></div>
     </div>
-    <div>
-      <div>
+    <hr />
+    <div class="d-flex justify-content-between">
+      <div class="d-flex align-items-center">
         <BaseWeatherIcon
           :icon="currentWeatherData.weather[0].icon"
-          :width="65"
-          :height="65"
+          :width="96"
+          :height="96"
         />
-        <p>{{ Math.ceil(currentWeatherData.main.temp) }} °C</p>
+        <span class="primary--text" style="font-size:72px">{{
+          Math.ceil(currentWeatherData.main.temp)
+        }}</span>
+        <span class="align-self-start mt-3">°C</span>
       </div>
 
-      <div>
-        <p>Humidité : {{ currentWeatherData.main.humidity }}%</p>
-        <p>Vent : {{ currentWeatherData.wind.speed }} m/s</p>
+      <div class="d-flex flex-column align-items-center justify-content-center">
+        <p class="mb-4">Humidité : {{ currentWeatherData.main.humidity }}%</p>
+        <p class="mb-0">Vent : {{ currentWeatherData.wind.speed }} m/s</p>
       </div>
     </div>
   </div>
@@ -50,3 +56,8 @@ export default {
   mixins: [mixinFunctions],
 };
 </script>
+<style scoped>
+.data-wrapper {
+  display: flex;
+}
+</style>
