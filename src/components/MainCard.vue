@@ -35,14 +35,12 @@
 </template>
 
 <script>
-import axios from "axios";
+import WeatherService from "./../services/WeatherService";
 import mixinFunctions from "../components/utils/functions";
+
 export default {
   data() {
     return {
-      token: process.env.VUE_APP_TOKEN,
-      baseCurrentWeatherURL:
-        "https://api.openweathermap.org/data/2.5/weather?q=lyon&lang=fr&units=metric&appid=",
       currentWeatherData: null,
     };
   },
@@ -52,8 +50,7 @@ export default {
     },
   },
   created() {
-    axios
-      .get(this.baseCurrentWeatherURL + this.token)
+    WeatherService.getWeather()
       .then((response) => {
         console.log(response.data);
         this.currentWeatherData = response.data;
