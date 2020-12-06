@@ -1,11 +1,7 @@
 <template>
-  <div>
+  <div class="container">
     <p>{{ getDayString(dayWeatherData.dt, "short") }}</p>
-    <BaseWeatherIcon
-      v-for="(el, index) in dayWeatherData.weather"
-      :key="index"
-      :icon="el.icon"
-    />
+    <BaseWeatherIcon :icon="dayWeatherData.weather[0].icon" />
     <div>
       <span>{{ Math.ceil(dayWeatherData.main.temp_max) }} °C</span>
       /
@@ -29,4 +25,10 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped>
+.container {
+  background-color: pink;
+  width: 50%;
+  margin: auto;
+}
+</style>

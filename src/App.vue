@@ -1,6 +1,8 @@
 <template>
   <div id="app">
+    <!-- TODO : Header -->
     <MainCard />
+    <!-- TODO : FOoter -->
   </div>
 </template>
 

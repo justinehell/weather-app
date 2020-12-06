@@ -1,7 +1,8 @@
 <template>
   <div class="main">
     <h1>Bienvenue sur votre App Météo Favorite !</h1>
-    <section v-if="currentWeatherData">
+    <!-- if null, components inside section are not mounted inside DOM -->
+    <section v-if="currentWeatherData && forecastWeatherData">
       <CurrentWeatherData :currentWeatherData="currentWeatherData" />
       <DayThumbnail :dayWeatherData="currentWeatherData" />
     </section>
@@ -18,6 +19,7 @@ export default {
   data() {
     return {
       currentWeatherData: null,
+      forecastWeatherData: null,
     };
   },
   components: {
@@ -25,13 +27,28 @@ export default {
     CurrentWeatherData,
   },
   methods: {},
+  computed: {},
   created() {
     WeatherService.getWeather()
       .then((response) => {
         this.currentWeatherData = response.data;
       })
       .catch((error) => {
-        console.log("There was an error:" + error.response);
+        console.log(
+          "There was an error while fetching current weather data::" +
+            error.response
+        );
+      });
+    WeatherService.getNextFiveDaysWeather()
+      .then((response) => {
+        console.log(response.data);
+        this.forecastWeatherData = response.data;
+      })
+      .catch((error) => {
+        console.log(
+          "There was an error while fetching forecast weather data:" +
+            error.message
+        );
       });
   },
   mixins: [mixinFunctions],
