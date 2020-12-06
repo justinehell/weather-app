@@ -1,11 +1,12 @@
 <template>
-  <div>
-    <p v-text="day"></p>
-    <BaseWeatherIcon :icon="icon" />
-    <div>
-      <span v-text="`${maxT} °C`"></span>
-      /
-      <span v-text="`${minT} °C`"></span>
+  <div class="thumbnail-wrapper">
+    <div v-text="day" class="text-center secondary--text"></div>
+
+    <BaseWeatherIcon :icon="icon" class="d-block m-auto" />
+
+    <div class="text-center">
+      <span v-text="`${maxT}°`" class="primary--text mr-2"></span>
+      <span v-text="`${minT}°`" class="secondary--text"></span>
     </div>
   </div>
 </template>
@@ -32,3 +33,10 @@ export default {
   },
 };
 </script>
+<style scoped>
+.thumbnail-wrapper {
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid #dfe1e5;
+}
+</style>

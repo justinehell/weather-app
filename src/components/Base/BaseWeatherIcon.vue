@@ -4,7 +4,6 @@
     :width="width"
     :height="height"
     alt="day weather"
-    class="base-icon"
   />
 </template>
 

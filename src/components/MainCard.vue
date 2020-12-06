@@ -1,9 +1,11 @@
 <template>
-  <div>
-    <h1>Bienvenue sur votre App Météo Favorite !</h1>
-    <!-- if null, components inside section are not mounted inside DOM -->
-    <section v-if="currentWeatherData && forecastWeatherData">
-      <CurrentWeatherData :currentWeatherData="currentWeatherData" />
+  <!-- if null, components inside section are not mounted inside DOM -->
+  <section
+    v-if="currentWeatherData && forecastWeatherData"
+    class="weather-card"
+  >
+    <CurrentWeatherData :currentWeatherData="currentWeatherData" class="mb-4" />
+    <div class="d-flex justify-content-between mb-4">
       <DayThumbnail
         :icon="currentWeatherData.weather[0].icon"
         :day="getDayString(currentWeatherData.dt, 'short')"
@@ -18,8 +20,26 @@
         :minT="el.minT"
         :maxT="el.maxT"
       />
-    </section>
-  </div>
+    </div>
+    <div
+      class="d-flex justify-content-between font-italic secondary--text "
+      style="font-size:12px; text-decoration:underline"
+    >
+      <a
+        href="https://openweathermap.org"
+        target="blank"
+        title="Lien vers le site Open Weather Map"
+        >openweathermap.org</a
+      >
+
+      <a
+        href="https://github.com/justinehell"
+        target="blank"
+        title="Lien vers le profil Github de Justine"
+        >Réalisé par Justine</a
+      >
+    </div>
+  </section>
 </template>
 
 <script>
@@ -116,24 +136,27 @@ export default {
         ),
         icon: this.findMostFrequentItem(this.arrayOfIcons(chunkArrays, 3)),
       };
-      let dataForDayFive = {
-        dt: this.getDayString(chunkArrays[4][0].dt, "short"),
-        maxT: Math.ceil(
-          Math.max(...this.arrayOfTemp(chunkArrays, 4, "temp_max"))
-        ),
-        minT: Math.floor(
-          Math.min(...this.arrayOfTemp(chunkArrays, 4, "temp_min"))
-        ),
-        icon: this.findMostFrequentItem(this.arrayOfIcons(chunkArrays, 4)),
-      };
 
       let forecastData = [
         dataForDayOne,
         dataForDayTwo,
         dataForDayThree,
         dataForDayFour,
-        dataForDayFive,
       ];
+
+      if (nextFiveDaysWeatherDataArray.length < 32) {
+        let dataForDayFive = {
+          dt: this.getDayString(chunkArrays[4][0].dt, "short"),
+          maxT: Math.ceil(
+            Math.max(...this.arrayOfTemp(chunkArrays, 4, "temp_max"))
+          ),
+          minT: Math.floor(
+            Math.min(...this.arrayOfTemp(chunkArrays, 4, "temp_min"))
+          ),
+          icon: this.findMostFrequentItem(this.arrayOfIcons(chunkArrays, 4)),
+        };
+        forecastData.push(dataForDayFive);
+      }
 
       return forecastData;
     },
@@ -163,3 +186,12 @@ export default {
   mixins: [mixinFunctions],
 };
 </script>
+<style scoped>
+.weather-card {
+  border-radius: 8px;
+  border: 1px solid #dfe1e5;
+  padding: 24px;
+  max-width: 688px;
+  background-color: white;
+}
+</style>
