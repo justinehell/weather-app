@@ -2,19 +2,7 @@
   <div class="main">
     <h1>Bienvenue sur votre App Météo Favorite !</h1>
     <section v-if="currentWeatherData">
-      <h2>{{ currentWeatherData.name }}</h2>
-      <p>
-        {{ getDayString(currentWeatherData.dt, "long") }}
-        {{ getHour(currentWeatherData.dt) }}
-      </p>
-      <p v-for="el in currentWeatherData.weather" :key="el.id">
-        {{ el.description }}
-        <BaseWeatherIcon :icon="el.icon" />
-      </p>
-
-      <p>{{ Math.ceil(currentWeatherData.main.temp) }} °C</p>
-      <p>Humidité : {{ currentWeatherData.main.humidity }}%</p>
-      <p>Vent : {{ currentWeatherData.wind.speed }} m/s</p>
+      <CurrentWeatherData :currentWeatherData="currentWeatherData" />
       <DayThumbnail :dayWeatherData="currentWeatherData" />
     </section>
   </div>
@@ -22,6 +10,7 @@
 
 <script>
 import DayThumbnail from "./DayThumbnail";
+import CurrentWeatherData from "./CurrentWeatherData";
 import WeatherService from "../services/WeatherService";
 import mixinFunctions from "../utils/functions";
 
@@ -33,6 +22,7 @@ export default {
   },
   components: {
     DayThumbnail,
+    CurrentWeatherData,
   },
   methods: {},
   created() {
@@ -63,5 +53,8 @@ li {
 }
 a {
   color: #42b983;
+}
+.main {
+  background-color: #42b983;
 }
 </style>

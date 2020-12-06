@@ -1,7 +1,10 @@
 <template>
   <img
     :src="'http://openweathermap.org/img/w/' + icon + '.png'"
+    :width="width"
+    :height="height"
     alt="day weather"
+    class="base-icon"
   />
 </template>
 
@@ -12,8 +15,16 @@ export default {
       type: String,
       required: true,
     },
+    width: {
+      type: [Number, String],
+      default: 50,
+    },
+    height: {
+      type: [Number, String],
+      default: 50,
+    },
   },
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped></style>
