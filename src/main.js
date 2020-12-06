@@ -1,8 +1,12 @@
-import Vue from 'vue'
-import App from './App.vue'
+import Vue from "vue";
+import App from "./App.vue";
+import BaseWeatherIcon from "./components/Base/BaseWeatherIcon.vue";
 
-Vue.config.productionTip = false
+// globally register the BaseIcon Component
+Vue.component("BaseWeatherIcon", BaseWeatherIcon);
+
+Vue.config.productionTip = false;
 
 new Vue({
-  render: h => h(App),
-}).$mount('#app')
+  render: (h) => h(App),
+}).$mount("#app");
