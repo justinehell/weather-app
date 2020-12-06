@@ -36,7 +36,7 @@
 
 <script>
 import WeatherService from "./../services/WeatherService";
-import mixinFunctions from "../components/utils/functions";
+import mixinFunctions from "../utils/functions";
 
 export default {
   data() {
@@ -52,7 +52,6 @@ export default {
   created() {
     WeatherService.getWeather()
       .then((response) => {
-        console.log(response.data);
         this.currentWeatherData = response.data;
       })
       .catch((error) => {
