@@ -1,34 +1,34 @@
 <template>
-  <div class="container">
-    <p>{{ getDayString(dayWeatherData.dt, "short") }}</p>
-    <BaseWeatherIcon :icon="dayWeatherData.weather[0].icon" />
+  <div>
+    <p v-text="day"></p>
+    <BaseWeatherIcon :icon="icon" />
     <div>
-      <span>{{ Math.ceil(dayWeatherData.main.temp_max) }} °C</span>
+      <span v-text="`${maxT} °C`"></span>
       /
-      <span>{{ Math.ceil(dayWeatherData.main.temp_min) }}°C</span>
+      <span v-text="`${minT} °C`"></span>
     </div>
   </div>
 </template>
 
 <script>
-import mixinFunctions from "../utils/functions";
-
 export default {
   props: {
-    dayWeatherData: {
-      type: Object,
+    day: {
+      type: String,
+      required: true,
+    },
+    icon: {
+      type: String,
+      required: true,
+    },
+    minT: {
+      type: Number,
+      required: true,
+    },
+    maxT: {
+      type: Number,
       required: true,
     },
   },
-  mixins: [mixinFunctions],
-  methods: {},
 };
 </script>
-
-<style scoped>
-.container {
-  background-color: pink;
-  width: 50%;
-  margin: auto;
-}
-</style>

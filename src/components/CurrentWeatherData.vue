@@ -1,6 +1,6 @@
 <template>
-  <div class="current-weather">
-    <div class="">
+  <div>
+    <div>
       <h2>{{ currentWeatherData.name }}</h2>
       <!-- v-text : inject the value via innerText -->
       <p v-text="date"></p>
@@ -16,7 +16,7 @@
         <p>{{ Math.ceil(currentWeatherData.main.temp) }} °C</p>
       </div>
 
-      <div class="">
+      <div>
         <p>Humidité : {{ currentWeatherData.main.humidity }}%</p>
         <p>Vent : {{ currentWeatherData.wind.speed }} m/s</p>
       </div>
@@ -50,12 +50,3 @@ export default {
   mixins: [mixinFunctions],
 };
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-.current-weather {
-  background-color: #e69f2f;
-  width: 70%;
-  margin: auto;
-}
-</style>

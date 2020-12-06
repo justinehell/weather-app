@@ -11,5 +11,9 @@ export default {
       let date = new Date(timestamp * 1000);
       return date.toLocaleString("fr", { weekday: strFormat });
     },
+    getDayInt(timestamp) {
+      let date = new Date(timestamp * 1000);
+      return date.getDay();
+    },
   },
 };
