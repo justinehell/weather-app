@@ -39,6 +39,9 @@
         >Réalisé par Justine</a
       >
     </div>
+    <div class="note secondary--text">
+      Notes: les données de l'api sont mises à jour toutes les 10 minutes
+    </div>
   </section>
 </template>
 
@@ -61,11 +64,11 @@ export default {
     CurrentWeatherData,
   },
   methods: {
-    arrayOfIcons(arr, index) {
+    getArrayOfIcons(arr, index) {
       return arr[index].map((data) => data.weather[0].icon);
     },
     findMostFrequentItem(arr) {
-      var result = _.head(
+      let result = _.head(
         _(arr)
           .countBy()
           .entries()
@@ -73,8 +76,21 @@ export default {
       );
       return result;
     },
-    arrayOfTemp(arr, index, temp) {
+    getArrayOfTemp(arr, index, temp) {
       return arr[index].map((data) => data.main[temp]);
+    },
+    getForecastDataPerDay(array, index) {
+      let dataPerDay = {
+        dt: this.getDayString(array[index][0].dt, "short"),
+        maxT: Math.ceil(
+          Math.max(...this.getArrayOfTemp(array, index, "temp_max"))
+        ),
+        minT: Math.floor(
+          Math.min(...this.getArrayOfTemp(array, index, "temp_min"))
+        ),
+        icon: this.findMostFrequentItem(this.getArrayOfIcons(array, index)),
+      };
+      return dataPerDay;
     },
   },
   computed: {
@@ -86,78 +102,27 @@ export default {
         (data) => this.getDayInt(data.dt) !== currentDay
       );
       // nextFiveDaysWeatherDataArray
-      // contains all the weather data for the next 5 days (without data for the current day)
-      // from this big array of objects, we need to get a separate array of data for each day
-      let OBJECT_DATA_PER_DAY = 8; // 8 chunks = arrays of data for each day
-      let chunkArrays = _.chunk(
-        nextFiveDaysWeatherDataArray,
-        OBJECT_DATA_PER_DAY
-      );
+      // contains all the weather data for the next 5 days (without data for the current day, removed from filter function)
+      // from this big array of objects, we need to separate the data related to each day
+      let DATA_PER_DAY = 8; // for each day, we have 8 objects representing the data
+      let chunkArrays = _.chunk(nextFiveDaysWeatherDataArray, DATA_PER_DAY);
 
       // For each day, we have 8 data objects. Now, we need to get the
       // date time, max temp, min temp & most frequent icon to display global weather info
-      let dataForDayOne = {
-        dt: this.getDayString(chunkArrays[0][0].dt, "short"),
-        maxT: Math.ceil(
-          Math.max(...this.arrayOfTemp(chunkArrays, 0, "temp_max"))
-        ),
-        minT: Math.floor(
-          Math.min(...this.arrayOfTemp(chunkArrays, 0, "temp_min"))
-        ),
-        icon: this.findMostFrequentItem(this.arrayOfIcons(chunkArrays, 0)),
-      };
-      let dataForDayTwo = {
-        dt: this.getDayString(chunkArrays[1][0].dt, "short"),
-        maxT: Math.ceil(
-          Math.max(...this.arrayOfTemp(chunkArrays, 1, "temp_max"))
-        ),
-        minT: Math.floor(
-          Math.min(...this.arrayOfTemp(chunkArrays, 1, "temp_min"))
-        ),
-        icon: this.findMostFrequentItem(this.arrayOfIcons(chunkArrays, 1)),
-      };
-      let dataForDayThree = {
-        dt: this.getDayString(chunkArrays[2][0].dt, "short"),
-        maxT: Math.ceil(
-          Math.max(...this.arrayOfTemp(chunkArrays, 2, "temp_max"))
-        ),
-        minT: Math.floor(
-          Math.min(...this.arrayOfTemp(chunkArrays, 2, "temp_min"))
-        ),
-        icon: this.findMostFrequentItem(this.arrayOfIcons(chunkArrays, 2)),
-      };
-      let dataForDayFour = {
-        dt: this.getDayString(chunkArrays[3][0].dt, "short"),
-        maxT: Math.ceil(
-          Math.max(...this.arrayOfTemp(chunkArrays, 3, "temp_max"))
-        ),
-        minT: Math.floor(
-          Math.min(...this.arrayOfTemp(chunkArrays, 3, "temp_min"))
-        ),
-        icon: this.findMostFrequentItem(this.arrayOfIcons(chunkArrays, 3)),
-      };
-
       let forecastData = [
-        dataForDayOne,
-        dataForDayTwo,
-        dataForDayThree,
-        dataForDayFour,
+        this.getForecastDataPerDay(chunkArrays, 0),
+        this.getForecastDataPerDay(chunkArrays, 1),
+        this.getForecastDataPerDay(chunkArrays, 2),
+        this.getForecastDataPerDay(chunkArrays, 3),
       ];
 
-      if (nextFiveDaysWeatherDataArray.length < 32) {
-        let dataForDayFive = {
-          dt: this.getDayString(chunkArrays[4][0].dt, "short"),
-          maxT: Math.ceil(
-            Math.max(...this.arrayOfTemp(chunkArrays, 4, "temp_max"))
-          ),
-          minT: Math.floor(
-            Math.min(...this.arrayOfTemp(chunkArrays, 4, "temp_min"))
-          ),
-          icon: this.findMostFrequentItem(this.arrayOfIcons(chunkArrays, 4)),
-        };
-        forecastData.push(dataForDayFive);
+      // handle a particular case where the filter function (l.85) removes the data for the current day
+      // Problem : when it's between midnight and 3:00 am, a whole chunk of data corresponding to the current day is removed
+      // So we only have 4 chunks left of 8 datas each (so data.length <= 32). We want to display 5 chunks of data when
+      // the forecast data.length > 32
+      if (nextFiveDaysWeatherDataArray.length > 32) {
+        forecastData.push(this.getForecastDataPerDay(chunkArrays, 4));
       }
-
       return forecastData;
     },
   },
@@ -193,5 +158,10 @@ export default {
   padding: 24px;
   max-width: 688px;
   background-color: white;
+}
+.note {
+  text-align: center;
+  font-size: 12px;
+  font-style: italic;
 }
 </style>
