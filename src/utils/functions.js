@@ -3,8 +3,9 @@ export default {
     // turn timestamp into hour (format hh:00)
     getHour(timestamp) {
       let date = new Date(timestamp * 1000);
+      let minutes = "0" + date.getMinutes();
       let hours = date.getHours();
-      return hours + ":00";
+      return hours + ":" + minutes.substr(-2);
     },
     // turn timestamp into day (format string)
     getDayString(timestamp, strFormat) {
