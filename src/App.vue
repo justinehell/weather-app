@@ -2,6 +2,7 @@
   <div id="app">
     <SearchBar />
     <MainCard />
+    <FavoriteCity />
     <!-- class="m-auto" -->
   </div>
 </template>
@@ -9,12 +10,14 @@
 <script>
 import MainCard from "./components/MainCard.vue";
 import SearchBar from "./components/SearchBar.vue";
+import FavoriteCity from "./components/FavoriteCity.vue";
 
 export default {
   name: "App",
   components: {
     MainCard,
     SearchBar,
+    FavoriteCity,
   },
 };
 </script>

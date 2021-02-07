@@ -48,7 +48,7 @@ const actions = {
       })
       .catch((error) => {
         console.log(
-          "There was an error while fetching weather data:" + error.response
+          "There was an error while fetching weather data : " + error
         );
       });
   },
