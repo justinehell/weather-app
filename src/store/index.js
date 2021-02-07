@@ -8,6 +8,7 @@ Vue.use(Vuex);
 // root state object.
 const state = {
   search: null,
+  favorites: {},
 };
 
 // mutations are operations that actually mutate the state.
@@ -18,6 +19,15 @@ const state = {
 const mutations = {
   SET_SEARCH(state, search) {
     state.search = search;
+  },
+  ADD_FAVORITE(state, favorite) {
+    // make a copy of the state and add the new favorite item
+    state.favorites = { ...state.favorites, [favorite.id]: favorite.name };
+  },
+  DELETE_FAVORITE(state, id) {
+    const newFavorites = { ...state.favorites };
+    delete newFavorites[id];
+    state.favorites = newFavorites;
   },
 };
 
@@ -42,6 +52,20 @@ const actions = {
         );
       });
   },
+  addFavorite({ commit }, favorite) {
+    commit("ADD_FAVORITE", favorite);
+  },
+  deleteFavorite({ commit }, id) {
+    commit("DELETE_FAVORITE", id);
+  },
+};
+
+const getters = {
+  isFavorite: (state) => {
+    if (!state.search) return false;
+    const id = state.search.current.id;
+    return !!state.favorites[id];
+  },
 };
 
 // A Vuex instance is created by combining the state, mutations, actions, and getters.
@@ -49,4 +73,5 @@ export default new Vuex.Store({
   state,
   actions,
   mutations,
+  getters,
 });

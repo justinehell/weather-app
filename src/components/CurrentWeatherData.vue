@@ -1,13 +1,24 @@
 <template>
   <div>
-    <div>
-      <h2 class="font-weight-bold primary--text">
-        {{ currentWeatherData.name }}
-      </h2>
-      <!-- v-text : inject the value via innerText -->
-      <div v-text="date" class="secondary--text"></div>
-      <div v-text="weatherDescription" class="secondary--text"></div>
+    <div class="d-flex justify-content-between align-items-start">
+      <div>
+        <h2 class="font-weight-bold primary--text">
+          {{ currentWeatherData.name }}
+        </h2>
+        <!-- v-text : inject the value via innerText -->
+        <div v-text="date" class="secondary--text"></div>
+        <div v-text="weatherDescription" class="secondary--text"></div>
+      </div>
+
+      <button @click="toggleFavorite">
+        {{
+          $store.getters.isFavorite
+            ? "Supprimer des favoris"
+            : "Ajouter aux favoris"
+        }}
+      </button>
     </div>
+
     <hr />
     <div class="d-flex justify-content-between">
       <div class="d-flex align-items-center">
@@ -38,6 +49,18 @@ export default {
     currentWeatherData: {
       type: Object,
       required: true,
+    },
+  },
+  methods: {
+    toggleFavorite() {
+      if (this.$store.getters.isFavorite) {
+        this.$store.dispatch("deleteFavorite", this.currentWeatherData.id);
+      } else {
+        this.$store.dispatch("addFavorite", {
+          id: this.currentWeatherData.id,
+          name: this.currentWeatherData.name,
+        });
+      }
     },
   },
   computed: {
