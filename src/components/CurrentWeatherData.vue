@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import mixinFunctions from "../utils/functions";
+import { getDayString, getHour } from "../utils";
 
 export default {
   props: {
@@ -43,17 +43,15 @@ export default {
   computed: {
     date() {
       return (
-        this.getDayString(this.currentWeatherData.dt, "long") +
+        getDayString(this.currentWeatherData.dt, "long") +
         " " +
-        this.getHour(this.currentWeatherData.dt)
+        getHour(this.currentWeatherData.dt)
       );
     },
     weatherDescription() {
       return this.currentWeatherData.weather[0].description;
     },
   },
-  methods: {},
-  mixins: [mixinFunctions],
 };
 </script>
 <style scoped>
