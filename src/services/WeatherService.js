@@ -12,14 +12,14 @@ const apiOpenWeather = axios.create({
 const API_TOKEN = process.env.VUE_APP_TOKEN;
 
 export default {
-  getWeather() {
+  getWeather(city = "lyon") {
     return apiOpenWeather.get(
-      "weather?q=lyon&lang=fr&units=metric&appid=" + API_TOKEN
+      "weather?q=" + city + "&lang=fr&units=metric&appid=" + API_TOKEN
     );
   },
-  getNextFiveDaysWeather() {
+  getNextFiveDaysWeather(city = "lyon") {
     return apiOpenWeather.get(
-      "forecast?q=lyon&lang=fr&units=metric&appid=" + API_TOKEN
+      "forecast?q=" + city + "&lang=fr&units=metric&appid=" + API_TOKEN
     );
   },
 };
