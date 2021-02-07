@@ -1,11 +1,11 @@
 <template>
-  <form class="input-wrapper">
+  <form class="input-wrapper" v-on:submit.prevent="submit">
     <input type="text" placeholder="ex: Paris" v-model="city" />
     <input
       type="button"
       value="chercher"
       :disabled="city.length === 0"
-      @click="$store.dispatch('searchWeather', city)"
+      @click="submit"
     />
   </form>
 </template>
@@ -17,7 +17,12 @@ export default {
       city: "",
     };
   },
-  methods: {},
+  methods: {
+    submit() {
+      this.$store.dispatch("searchWeather", this.city);
+      this.city = "";
+    },
+  },
 };
 </script>
 <style scoped>
