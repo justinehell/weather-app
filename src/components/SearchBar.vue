@@ -1,7 +1,12 @@
 <template>
   <form class="input-wrapper">
     <input type="text" placeholder="ex: Paris" v-model="city" />
-    <input type="button" value="chercher" :disabled="city.length === 0" />
+    <input
+      type="button"
+      value="chercher"
+      :disabled="city.length === 0"
+      @click="$store.dispatch('searchWeather', city)"
+    />
   </form>
 </template>
 

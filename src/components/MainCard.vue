@@ -1,19 +1,10 @@
 <template>
   <!-- if null, components inside section are not mounted inside DOM -->
-  <section
-    v-if="currentWeatherData && forecastWeatherData"
-    class="weather-card"
-  >
-    <CurrentWeatherData :currentWeatherData="currentWeatherData" class="mb-4" />
+  <section v-if="search" class="weather-card">
+    <CurrentWeatherData :currentWeatherData="search.current" class="mb-4" />
     <div class="d-flex justify-content-between mb-4">
       <DayThumbnail
-        :icon="currentWeatherData.weather[0].icon"
-        :day="getDayString(currentWeatherData.dt, 'short')"
-        :minT="Math.floor(currentWeatherData.main.temp_min)"
-        :maxT="Math.ceil(currentWeatherData.main.temp_max)"
-      />
-      <DayThumbnail
-        v-for="(el, index) in getNextFiveDaysWeatherData"
+        v-for="(el, index) in [currentDay, ...getNextFiveDaysWeatherData]"
         :key="index"
         :icon="el.icon"
         :day="el.dt"
@@ -48,17 +39,10 @@
 <script>
 import DayThumbnail from "./DayThumbnail";
 import CurrentWeatherData from "./CurrentWeatherData";
-import WeatherService from "../services/WeatherService";
-import mixinFunctions from "../utils/functions";
+import { getDayString, getDayInt } from "../utils";
 import _ from "lodash";
 
 export default {
-  data() {
-    return {
-      currentWeatherData: null,
-      forecastWeatherData: null,
-    };
-  },
   components: {
     DayThumbnail,
     CurrentWeatherData,
@@ -81,7 +65,7 @@ export default {
     },
     getForecastDataPerDay(array, index) {
       let dataPerDay = {
-        dt: this.getDayString(array[index][0].dt, "short"),
+        dt: getDayString(array[index][0].dt, "short"),
         maxT: Math.ceil(
           Math.max(...this.getArrayOfTemp(array, index, "temp_max"))
         ),
@@ -94,12 +78,21 @@ export default {
     },
   },
   computed: {
+    currentDay() {
+      if (!this.search) return null;
+      return {
+        icon: this.search.current.weather[0].icon,
+        dt: getDayString(this.search.current.dt, "short"),
+        minT: Math.floor(this.search.current.main.temp_min),
+        maxT: Math.ceil(this.search.current.main.temp_max),
+      };
+    },
     getNextFiveDaysWeatherData() {
-      if (!this.currentWeatherData) return [];
-      let currentDay = this.getDayInt(this.currentWeatherData.dt); // 0 for Sunday and 6 for Saturday
-      let copyForecastData = [...this.forecastWeatherData.list]; // copy data to avoid mutating
+      if (!this.search) return [];
+      let currentDay = getDayInt(this.search.current.dt); // 0 for Sunday and 6 for Saturday
+      let copyForecastData = [...this.search.forecast.list]; // copy data to avoid mutating
       let nextFiveDaysWeatherDataArray = copyForecastData.filter(
-        (data) => this.getDayInt(data.dt) !== currentDay
+        (data) => getDayInt(data.dt) !== currentDay
       );
       // nextFiveDaysWeatherDataArray
       // contains all the weather data for the next 5 days (without data for the current day, removed from filter function)
@@ -125,30 +118,10 @@ export default {
       }
       return forecastData;
     },
+    search() {
+      return this.$store.state.search;
+    },
   },
-  created() {
-    WeatherService.getWeather()
-      .then((response) => {
-        this.currentWeatherData = response.data;
-      })
-      .catch((error) => {
-        console.log(
-          "There was an error while fetching current weather data::" +
-            error.response
-        );
-      });
-    WeatherService.getNextFiveDaysWeather()
-      .then((response) => {
-        this.forecastWeatherData = response.data;
-      })
-      .catch((error) => {
-        console.log(
-          "There was an error while fetching forecast weather data:" +
-            error.message
-        );
-      });
-  },
-  mixins: [mixinFunctions],
 };
 </script>
 <style scoped>
