@@ -7,8 +7,8 @@ Vue.use(Vuex);
 
 // root state object.
 const state = {
-  search: {},
-  favorites: JSON.parse(localStorage.getItem("favorite")),
+  search: null,
+  favorites: JSON.parse(localStorage.getItem("favorite")) || {},
   searchLoading: false,
 };
 
