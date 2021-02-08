@@ -12,6 +12,6 @@ export const getDayString = (timestamp, strFormat) => {
 };
 
 export const getDayInt = (timestamp) => {
-  let date = new Date(timestamp * 1000);
+  let date = new Date(timestamp);
   return date.getDay();
 };

@@ -65,16 +65,16 @@ export const getForecastDataPerDay = (array, index) => {
 
 export const getNextFiveDaysWeatherData = (data) => {
   if (!data.list) return [];
-  let currentDay = getDayInt(new Date()); // 0 for Sunday and 6 for Saturday
+  const date = new Date();
+  let currentDay = date.getDay(); // 0 for Sunday and 6 for Saturday
   let forcastWeatherDataArray = [...data.list]; // copy data to avoid mutating
   let nextFiveDaysWeatherDataArray = forcastWeatherDataArray.filter(
-    (data) => getDayInt(data.dt) !== currentDay
+    (el) => getDayInt(el.dt * 1000) !== currentDay
   );
   // contains all the weather data for the next 5 days in an array of object
   // we need to separate the data related to each day
   let DATA_PER_DAY = 8; // 8 objects data for each day
   let chunkArrays = _.chunk(nextFiveDaysWeatherDataArray, DATA_PER_DAY);
-
   // we only need the date, max temp, min temp & most frequent icon
   let forecastData = [
     getForecastDataPerDay(chunkArrays, 0),
