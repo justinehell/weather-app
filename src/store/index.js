@@ -8,7 +8,7 @@ Vue.use(Vuex);
 // root state object.
 const state = {
   search: null,
-  favorites: {},
+  favorites: JSON.parse(localStorage.getItem("favorite")),
 };
 
 // mutations are operations that actually mutate the state.
@@ -22,6 +22,7 @@ const mutations = {
   },
   ADD_FAVORITE(state, favorite) {
     // make a copy of the state and add the new favorite item
+    // see https://vuejs.org/v2/guide/reactivity.html#For-Objects
     state.favorites = { ...state.favorites, [favorite.id]: favorite.name };
   },
   DELETE_FAVORITE(state, id) {
@@ -54,9 +55,11 @@ const actions = {
   },
   addFavorite({ commit }, favorite) {
     commit("ADD_FAVORITE", favorite);
+    localStorage.setItem("favorite", JSON.stringify(state.favorites));
   },
   deleteFavorite({ commit }, id) {
     commit("DELETE_FAVORITE", id);
+    localStorage.setItem("favorite", JSON.stringify(state.favorites));
   },
 };
 
