@@ -14,7 +14,7 @@
           :class="[
             $store.getters.isFavorite ? 'bi bi-star-fill' : 'bi bi-star',
           ]"
-          style="color: gold"
+          style="color: gold; font-size: 1.5rem"
         ></i>
       </button>
     </div>

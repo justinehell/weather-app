@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div v-if="searchLoading" class="alert alert-info" role="alert">
+  <div class="main-card">
+    <div v-if="searchLoading" class="alert alert-info loading" role="alert">
       Chargement des données... Veuillez patienter s'il vous plait
     </div>
     <section v-else-if="search" class="weather-card">
@@ -60,16 +60,23 @@ export default {
 };
 </script>
 <style scoped>
+.main-card {
+  width: 100%;
+}
 .weather-card {
-  border-radius: 8px;
-  border: 1px solid #dfe1e5;
+  border-radius: 5px;
   padding: 24px;
-  max-width: 688px;
+  min-width: 662px;
+  height: 500px;
   background-color: white;
 }
 .note {
   text-align: center;
   font-size: 12px;
   font-style: italic;
+}
+.loading {
+  height: 485px;
+  width: 100%;
 }
 </style>
