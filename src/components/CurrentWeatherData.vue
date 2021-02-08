@@ -9,13 +9,13 @@
         <div v-text="date" class="secondary--text"></div>
         <div v-text="weatherDescription" class="secondary--text"></div>
       </div>
-
       <button @click="toggleFavorite">
-        {{
-          $store.getters.isFavorite
-            ? "Supprimer des favoris"
-            : "Ajouter aux favoris"
-        }}
+        <i
+          :class="[
+            $store.getters.isFavorite ? 'bi bi-star-fill' : 'bi bi-star',
+          ]"
+          style="color: gold"
+        ></i>
       </button>
     </div>
 
@@ -80,5 +80,14 @@ export default {
 <style scoped>
 .data-wrapper {
   display: flex;
+}
+button {
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
 }
 </style>

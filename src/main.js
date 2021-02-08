@@ -3,6 +3,8 @@ import App from "./App.vue";
 import BaseWeatherIcon from "./components/Base/BaseWeatherIcon.vue";
 import store from "./store";
 
+import "bootstrap-icons/font/bootstrap-icons.css";
+
 // globally register the BaseIcon Component
 Vue.component("BaseWeatherIcon", BaseWeatherIcon);
 
