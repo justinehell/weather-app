@@ -39,9 +39,7 @@ const mutations = {
     state.notification = notification;
   },
   REMOVE_NOTIFICATION(state, notification) {
-    setTimeout(() => {
-      state.notification = notification;
-    }, 3000);
+    state.notification = notification;
   },
 };
 
@@ -58,11 +56,12 @@ const actions = {
     ])
       .then((responses) => {
         commit("SET_SEARCH", {
-          current: responses[0].data,
-          forecast: responses[1].data,
+          current: responses[0],
+          forecast: responses[1],
         });
       })
-      .catch(() => {
+      .catch((err) => {
+        console.log(err);
         commit("SET_NOTIFICATION", {
           type: "danger",
           message: `La ville "${city}" n'existe pas ! (Attention aux fautes de frappes)`,
@@ -87,7 +86,7 @@ const actions = {
     localStorage.setItem("favorite", JSON.stringify(state.favorites));
   },
   removeNotification({ commit }) {
-    commit("REMOVE_NOTIFICATION", null);
+    commit("REMOVE_NOTIFICATION");
   },
 };
 

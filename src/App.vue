@@ -7,6 +7,7 @@
       v-if="notification"
       :type="notification.type"
       :message="notification.message"
+      :key="notification.message"
     />
 
     <!-- class="m-auto" -->

@@ -17,7 +17,9 @@ export default {
     },
   },
   created() {
-    this.$store.dispatch("removeNotification", null);
+    setTimeout(() => {
+      this.$store.dispatch("removeNotification", null);
+    }, 3000);
   },
 };
 </script>
