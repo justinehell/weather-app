@@ -54,7 +54,10 @@ export default {
   methods: {
     toggleFavorite() {
       if (this.$store.getters.isFavorite) {
-        this.$store.dispatch("deleteFavorite", this.currentWeatherData.id);
+        this.$store.dispatch("deleteFavorite", {
+          id: this.currentWeatherData.id,
+          name: this.currentWeatherData.name,
+        });
       } else {
         this.$store.dispatch("addFavorite", {
           id: this.currentWeatherData.id,

@@ -10,6 +10,7 @@ const state = {
   search: null,
   favorites: JSON.parse(localStorage.getItem("favorite")) || {},
   searchLoading: false,
+  notification: null,
 };
 
 // mutations are operations that actually mutate the state.
@@ -34,6 +35,14 @@ const mutations = {
   SET_LOADING(state, bool) {
     state.searchLoading = bool;
   },
+  SET_NOTIFICATION(state, notification) {
+    state.notification = notification;
+  },
+  REMOVE_NOTIFICATION(state, notification) {
+    setTimeout(() => {
+      state.notification = notification;
+    }, 3000);
+  },
 };
 
 // actions are functions that cause side effects and can involve
@@ -42,6 +51,7 @@ const actions = {
   searchWeather({ commit }, city) {
     commit("SET_SEARCH", null);
     commit("SET_LOADING", true);
+    commit("SET_NOTIFICATION", null);
     Promise.all([
       WeatherService.getWeather(city),
       WeatherService.getNextFiveDaysWeather(city),
@@ -52,20 +62,32 @@ const actions = {
           forecast: responses[1].data,
         });
       })
-      .catch((error) => {
-        console.log(
-          "There was an error while fetching weather data : " + error
-        );
+      .catch(() => {
+        commit("SET_NOTIFICATION", {
+          type: "danger",
+          message: `La ville "${city}" n'existe pas ! (Attention aux fautes de frappes)`,
+        });
       })
       .finally(() => commit("SET_LOADING", false));
   },
   addFavorite({ commit }, favorite) {
     commit("ADD_FAVORITE", favorite);
+    commit("SET_NOTIFICATION", {
+      type: "success",
+      message: `La ville "${favorite.name}" a bien été enregistrée dans vos favoris`,
+    });
     localStorage.setItem("favorite", JSON.stringify(state.favorites));
   },
-  deleteFavorite({ commit }, id) {
-    commit("DELETE_FAVORITE", id);
+  deleteFavorite({ commit }, favorite) {
+    commit("DELETE_FAVORITE", favorite.id);
+    commit("SET_NOTIFICATION", {
+      type: "warning",
+      message: `La ville "${favorite.name}" a bien été supprimée de vos favoris`,
+    });
     localStorage.setItem("favorite", JSON.stringify(state.favorites));
+  },
+  removeNotification({ commit }) {
+    commit("REMOVE_NOTIFICATION", null);
   },
 };
 

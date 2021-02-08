@@ -3,6 +3,12 @@
     <SearchBar />
     <MainCard />
     <FavoriteCity />
+    <BaseNotification
+      v-if="notification"
+      :type="notification.type"
+      :message="notification.message"
+    />
+
     <!-- class="m-auto" -->
   </div>
 </template>
@@ -11,6 +17,7 @@
 import MainCard from "./components/MainCard.vue";
 import SearchBar from "./components/SearchBar.vue";
 import FavoriteCity from "./components/FavoriteCity.vue";
+import BaseNotification from "./components/Base/BaseNotification";
 
 export default {
   name: "App",
@@ -18,6 +25,12 @@ export default {
     MainCard,
     SearchBar,
     FavoriteCity,
+    BaseNotification,
+  },
+  computed: {
+    notification() {
+      return this.$store.state.notification;
+    },
   },
 };
 </script>

@@ -37,9 +37,6 @@
         Notes: les données de l'api sont mises à jour toutes les 10 minutes
       </div>
     </section>
-    <div v-else class="alert alert-danger" role="alert">
-      Cette ville n'existe pas ! (Attention aux fautes de frappes)
-    </div>
   </div>
 </template>
 
