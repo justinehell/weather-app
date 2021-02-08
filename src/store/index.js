@@ -7,8 +7,9 @@ Vue.use(Vuex);
 
 // root state object.
 const state = {
-  search: null,
+  search: {},
   favorites: JSON.parse(localStorage.getItem("favorite")),
+  searchLoading: false,
 };
 
 // mutations are operations that actually mutate the state.
@@ -30,6 +31,9 @@ const mutations = {
     delete newFavorites[id];
     state.favorites = newFavorites;
   },
+  SET_LOADING(state, bool) {
+    state.searchLoading = bool;
+  },
 };
 
 // actions are functions that cause side effects and can involve
@@ -37,6 +41,7 @@ const mutations = {
 const actions = {
   searchWeather({ commit }, city) {
     commit("SET_SEARCH", null);
+    commit("SET_LOADING", true);
     Promise.all([
       WeatherService.getWeather(city),
       WeatherService.getNextFiveDaysWeather(city),
@@ -51,7 +56,8 @@ const actions = {
         console.log(
           "There was an error while fetching weather data : " + error
         );
-      });
+      })
+      .finally(() => commit("SET_LOADING", false));
   },
   addFavorite({ commit }, favorite) {
     commit("ADD_FAVORITE", favorite);

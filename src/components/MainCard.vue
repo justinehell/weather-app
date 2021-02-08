@@ -1,39 +1,46 @@
 <template>
-  <!-- if null, components inside section are not mounted inside DOM -->
-  <section v-if="search" class="weather-card">
-    <CurrentWeatherData :currentWeatherData="search.current" class="mb-4" />
-    <div class="d-flex justify-content-between mb-4">
-      <DayThumbnail
-        v-for="(el, index) in [currentDay, ...getNextFiveDaysWeatherData]"
-        :key="index"
-        :icon="el.icon"
-        :day="el.dt"
-        :minT="el.minT"
-        :maxT="el.maxT"
-      />
+  <div>
+    <div v-if="searchLoading" class="alert alert-info" role="alert">
+      Chargement des données... Veuillez patienter s'il vous plait
     </div>
-    <div
-      class="d-flex justify-content-between font-italic secondary--text "
-      style="font-size:12px; text-decoration:underline"
-    >
-      <a
-        href="https://openweathermap.org"
-        target="blank"
-        title="Lien vers le site Open Weather Map"
-        >openweathermap.org</a
+    <section v-else-if="search" class="weather-card">
+      <CurrentWeatherData :currentWeatherData="search.current" class="mb-4" />
+      <div class="d-flex justify-content-between mb-4">
+        <DayThumbnail
+          v-for="(el, index) in [currentDay, ...getNextFiveDaysWeatherData]"
+          :key="index"
+          :icon="el.icon"
+          :day="el.dt"
+          :minT="el.minT"
+          :maxT="el.maxT"
+        />
+      </div>
+      <div
+        class="d-flex justify-content-between font-italic secondary--text "
+        style="font-size:12px; text-decoration:underline"
       >
+        <a
+          href="https://openweathermap.org"
+          target="blank"
+          title="Lien vers le site Open Weather Map"
+          >openweathermap.org</a
+        >
 
-      <a
-        href="https://github.com/justinehell"
-        target="blank"
-        title="Lien vers le profil Github de Justine"
-        >Réalisé par Justine</a
-      >
+        <a
+          href="https://github.com/justinehell"
+          target="blank"
+          title="Lien vers le profil Github de Justine"
+          >Réalisé par Justine</a
+        >
+      </div>
+      <div class="note secondary--text">
+        Notes: les données de l'api sont mises à jour toutes les 10 minutes
+      </div>
+    </section>
+    <div v-else class="alert alert-danger" role="alert">
+      Cette ville n'existe pas ! (Attention aux fautes de frappes)
     </div>
-    <div class="note secondary--text">
-      Notes: les données de l'api sont mises à jour toutes les 10 minutes
-    </div>
-  </section>
+  </div>
 </template>
 
 <script>
@@ -120,6 +127,9 @@ export default {
     },
     search() {
       return this.$store.state.search;
+    },
+    searchLoading() {
+      return this.$store.state.searchLoading;
     },
   },
 };
