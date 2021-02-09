@@ -38,7 +38,7 @@ li {
   transition: color 300ms, background-color 300ms;
 }
 li:hover {
-  background-color: #0d6efd;
+  background-color: #09c;
   color: white;
 }
 h4 {

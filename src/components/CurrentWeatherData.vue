@@ -9,13 +9,23 @@
         <div v-text="date" class="secondary--text"></div>
         <div v-text="weatherDescription" class="secondary--text"></div>
       </div>
-      <button @click="toggleFavorite">
+      <button @click="toggleFavorite" aria-label="favoris">
         <i
           :class="[
             $store.getters.isFavorite ? 'bi bi-star-fill' : 'bi bi-star',
           ]"
           style="color: gold; font-size: 1.5rem"
-        ></i>
+          width="24px"
+          height="24px"
+          alt="ajouter aux favoris"
+          name="favoris"
+        >
+          <span class="info">{{
+            $store.getters.isFavorite
+              ? "Supprimer des favoris"
+              : "Ajouter aux favoris"
+          }}</span>
+        </i>
       </button>
     </div>
 
@@ -92,5 +102,33 @@ button {
   font: inherit;
   cursor: pointer;
   outline: inherit;
+}
+i span {
+  position: absolute;
+  margin-left: -50px;
+  color: white;
+  background: #09c;
+  padding: 4px 5px;
+  font-size: 1rem;
+  border-radius: 3px;
+  opacity: 0;
+  transform: translate3d(-90%, 5px, 0px);
+}
+i:hover span.info {
+  opacity: 1;
+  visibility: visible;
+}
+span.info::before {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  transform: rotate(45deg);
+  background-color: #09c;
+  content: " ";
+  right: 0px;
+  top: 45%;
+  margin-right: -2px;
+  margin-top: -2px;
+  z-index: -2;
 }
 </style>
