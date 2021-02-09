@@ -35,6 +35,11 @@ li {
   padding: 15px 20px;
   border-radius: 5px;
   cursor: pointer;
+  transition: color 300ms, background-color 300ms;
+}
+li:hover {
+  background-color: #0d6efd;
+  color: white;
 }
 h4 {
   color: white;
