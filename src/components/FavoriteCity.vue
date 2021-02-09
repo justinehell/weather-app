@@ -3,12 +3,12 @@
     <h4>Mes favoris</h4>
     <ul class="d-flex p-0 flex-wrap ">
       <li
-        v-for="city in favoritesCities"
-        :key="city"
-        @click="$store.dispatch('searchWeather', city)"
-        :class="[currentCity === city ? 'active' : '']"
+        v-for="(name, id) in favoritesCities"
+        :key="id"
+        @click="$store.dispatch('searchWeather', name)"
+        :class="[currentCity.id === parseInt(id) ? 'active' : '']"
       >
-        {{ city }}
+        {{ name }}
       </li>
     </ul>
   </div>
@@ -21,7 +21,8 @@ export default {
       return this.$store.state.favorites;
     },
     currentCity() {
-      return this.$store.state.search.current.name;
+      if (!this.$store.state.search) return "";
+      return this.$store.state.search.current;
     },
   },
 };
