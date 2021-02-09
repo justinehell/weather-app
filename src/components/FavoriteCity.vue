@@ -6,6 +6,7 @@
         v-for="city in favoritesCities"
         :key="city"
         @click="$store.dispatch('searchWeather', city)"
+        :class="[$store.state.search.current.name === city ? 'active' : '']"
       >
         {{ city }}
       </li>
@@ -46,5 +47,9 @@ h4 {
   font-weight: 600;
   margin-bottom: 16px;
   font-family: "Bowlby One SC", cursive;
+}
+.active {
+  background-color: #09c;
+  color: white;
 }
 </style>
