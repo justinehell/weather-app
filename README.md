@@ -6,10 +6,37 @@ You want to know the weather forecast for the coming week ? I have just the righ
 This is a simple app made with Vue.js and [OpenweatherMap API](openweathermap.org).
 I had fun while building this app and I will continue to learn Vue with this project.
 
-## Next features that I will be working on : 
+## Next features that I will be working on :
+
 - Show the weather details for a particular day after a click on that day's thumbnail
 - Add cool animations and effects
-- Search Bar to find the weather in the location of your choice
+- Search Bar to find the weather in the location of your choice ✔
 - A graph that will show the evolution of the temperature (every 3 hours)
 
+## Project setup
 
+```
+npm install
+```
+
+### Compiles and hot-reloads for development
+
+```
+npm run serve
+```
+
+### Compiles and minifies for production
+
+```
+npm run build
+```
+
+### Lints and fixes files
+
+```
+npm run lint
+```
+
+### Customize configuration
+
+See [Configuration Reference](https://cli.vuejs.org/config/).
