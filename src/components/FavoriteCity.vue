@@ -6,7 +6,7 @@
         v-for="city in favoritesCities"
         :key="city"
         @click="$store.dispatch('searchWeather', city)"
-        :class="[$store.state.search.current.name === city ? 'active' : '']"
+        :class="[currentCity === city ? 'active' : '']"
       >
         {{ city }}
       </li>
@@ -19,6 +19,9 @@ export default {
   computed: {
     favoritesCities() {
       return this.$store.state.favorites;
+    },
+    currentCity() {
+      return this.$store.state.search.current.name;
     },
   },
 };
