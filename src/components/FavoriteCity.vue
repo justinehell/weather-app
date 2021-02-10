@@ -3,11 +3,12 @@
     <h4>Mes favoris</h4>
     <ul class="d-flex p-0 flex-wrap ">
       <li
-        v-for="city in favoritesCities"
-        :key="city"
-        @click="$store.dispatch('searchWeather', city)"
+        v-for="(name, id) in favoritesCities"
+        :key="id"
+        @click="$store.dispatch('searchWeather', name)"
+        :class="[currentCity.id === parseInt(id) ? 'active' : '']"
       >
-        {{ city }}
+        {{ name }}
       </li>
     </ul>
   </div>
@@ -18,6 +19,10 @@ export default {
   computed: {
     favoritesCities() {
       return this.$store.state.favorites;
+    },
+    currentCity() {
+      if (!this.$store.state.search) return "";
+      return this.$store.state.search.current;
     },
   },
 };
@@ -38,7 +43,7 @@ li {
   transition: color 300ms, background-color 300ms;
 }
 li:hover {
-  background-color: #0d6efd;
+  background-color: #09c;
   color: white;
 }
 h4 {
@@ -46,5 +51,9 @@ h4 {
   font-weight: 600;
   margin-bottom: 16px;
   font-family: "Bowlby One SC", cursive;
+}
+.active {
+  background-color: #09c;
+  color: white;
 }
 </style>
